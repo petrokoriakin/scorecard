@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ThingsController do
+RSpec.describe ScoresController do
   describe '#index' do
     render_views
 
