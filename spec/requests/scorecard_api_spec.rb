@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Scorecard API', type: :request, vcr: true do
   describe 'root endpoint' do
-    before { get '/' }
+    before { get '/', params: { repo_name: 'some_repo' } }
 
     it 'renders json' do
       expect(response.content_type).to eq('application/json; charset=utf-8')
@@ -16,11 +16,12 @@ RSpec.describe 'Scorecard API', type: :request, vcr: true do
 
     it 'renders data' do
       data = JSON.parse(response.body)
-      expect(data).to eq({ 'scores' => [{ 'id' => 13, 'name' => 'some_score' }] })
+      expect(data).to eq({ 'scores' => [{ 'id' => 13, 'name' => 'user1', 'score' => 99, 'repo_name' => 'some_repo' },
+                                        { 'id' => 14, 'name' => 'user2', 'score' => 77, 'repo_name' => 'some_repo' }] })
     end
   end
 
-  xdescribe 'repos index' do
+  describe 'repos index' do
     before { get '/repos' }
 
     it 'renders json' do
@@ -37,7 +38,7 @@ RSpec.describe 'Scorecard API', type: :request, vcr: true do
     end
   end
 
-  xdescribe 'repos member' do
+  describe 'repos member' do
     before { get '/repos/some_repo' }
 
     it 'renders json' do
@@ -54,7 +55,7 @@ RSpec.describe 'Scorecard API', type: :request, vcr: true do
     end
   end
 
-  xdescribe 'repo scores' do
+  describe 'repo scores' do
     before { get '/repos/some_repo/scores' }
 
     it 'renders json' do
@@ -72,7 +73,7 @@ RSpec.describe 'Scorecard API', type: :request, vcr: true do
     end
   end
 
-  xdescribe 'repo score for user' do
+  describe 'repo score for user' do
     before { get '/repos/some_repo/scores/user1' }
 
     it 'renders json' do
