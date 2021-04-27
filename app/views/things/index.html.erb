@@ -1,0 +1,23 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Things</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Name</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @things.each do |thing| %>
+      <tr>
+        <td><%= thing[:id] %></td>
+        <td><%= thing[:name] %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
