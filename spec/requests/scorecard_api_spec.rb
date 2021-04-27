@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.xdescribe 'Scorecard API', type: :request, vcr: true do
+RSpec.describe 'Scorecard API', type: :request, vcr: true do
   describe 'root endpoint' do
     before { get '/' }
 
@@ -20,7 +20,7 @@ RSpec.xdescribe 'Scorecard API', type: :request, vcr: true do
     end
   end
 
-  describe 'repos index' do
+  xdescribe 'repos index' do
     before { get '/repos' }
 
     it 'renders json' do
@@ -37,7 +37,7 @@ RSpec.xdescribe 'Scorecard API', type: :request, vcr: true do
     end
   end
 
-  describe 'repos member' do
+  xdescribe 'repos member' do
     before { get '/repos/some_repo' }
 
     it 'renders json' do
@@ -54,7 +54,7 @@ RSpec.xdescribe 'Scorecard API', type: :request, vcr: true do
     end
   end
 
-  describe 'repo scores' do
+  xdescribe 'repo scores' do
     before { get '/repos/some_repo/scores' }
 
     it 'renders json' do
@@ -72,7 +72,7 @@ RSpec.xdescribe 'Scorecard API', type: :request, vcr: true do
     end
   end
 
-  describe 'repo score for user' do
+  xdescribe 'repo score for user' do
     before { get '/repos/some_repo/scores/user1' }
 
     it 'renders json' do
