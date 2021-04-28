@@ -36,12 +36,12 @@ RSpec.describe DataFetchers::GitHub, :vcr do
                                                  created_at: Time.zone.parse('2021-04-27 20:13:54') })
     end
 
-    it 'reveals reviews details' do
+    it 'reveals review details' do
       expect(service_result[:reviews].first).to eq({ author: 'petrokoriakin',
                                                      created_at: Time.zone.parse('2021-04-27 20:13:54') })
     end
 
-    it 'reveals comments details' do
+    it 'reveals comment details' do
       expect(service_result[:comments].first).to eq({ author: 'petrokoriakin',
                                                       created_at: Time.zone.parse('2021-04-27 20:13:54') })
     end

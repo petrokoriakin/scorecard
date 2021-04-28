@@ -8,7 +8,8 @@ module DataFetchers
 
     def call
       data = JSON.parse(obtain_raw_data)
-      { prs: parse_prs_details(data), reviews: parse_reviews_details(data), comments: parse_comments_details(data) }
+      { prs: collect_prs_details(data), reviews: collect_reviews_details(data),
+        comments: collect_comments_details(data) }
     end
 
     private
@@ -26,15 +27,15 @@ module DataFetchers
       response.body
     end
 
-    def parse_prs_details(_data)
+    def collect_prs_details(_data)
       [{ author: 'petrokoriakin', created_at: Time.zone.parse('2021-04-27 20:13:54') }]
     end
 
-    def parse_reviews_details(_data)
+    def collect_reviews_details(_data)
       [{ author: 'petrokoriakin', created_at: Time.zone.parse('2021-04-27 20:13:54') }]
     end
 
-    def parse_comments_details(_data)
+    def collect_comments_details(_data)
       [{ author: 'petrokoriakin', created_at: Time.zone.parse('2021-04-27 20:13:54') }]
     end
   end
