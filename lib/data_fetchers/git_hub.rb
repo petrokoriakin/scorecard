@@ -8,8 +8,7 @@ module DataFetchers
 
     def call
       data = JSON.parse(obtain_raw_data)
-      data.map { |data_item| data_item['type'] }
-      { prs: {}, reviews: {}, comments: {} }
+      { prs: parse_prs_details(data), reviews: parse_reviews_details(data), comments: parse_comments_details(data) }
     end
 
     private
@@ -25,6 +24,18 @@ module DataFetchers
         http.request(request)
       end
       response.body
+    end
+
+    def parse_prs_details(_data)
+      [{ author: 'petrokoriakin', created_at: Time.zone.parse('2021-04-27 20:13:54') }]
+    end
+
+    def parse_reviews_details(_data)
+      [{ author: 'petrokoriakin', created_at: Time.zone.parse('2021-04-27 20:13:54') }]
+    end
+
+    def parse_comments_details(_data)
+      [{ author: 'petrokoriakin', created_at: Time.zone.parse('2021-04-27 20:13:54') }]
     end
   end
 end
