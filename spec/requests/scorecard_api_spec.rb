@@ -91,7 +91,7 @@ RSpec.describe 'Scorecard API', type: :request, vcr: true do
 
     it 'renders score details' do
       data = JSON.parse(response.body)
-      expect(data['score_details']).to eq({ 'pr_quantity' => 4, 'pr_points' => 48, 'reviews_quantity' => 2,
+      expect(data['score_details']).to eq({ 'prs_quantity' => 4, 'prs_points' => 48, 'reviews_quantity' => 2,
                                             'reviews_points' => 6, 'comments_quantity' => 5, 'comments_score' => 5 })
     end
   end

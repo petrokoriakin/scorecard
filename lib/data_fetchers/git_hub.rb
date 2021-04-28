@@ -8,8 +8,8 @@ module DataFetchers
 
     def call
       data = JSON.parse(obtain_raw_data)
-      event_types = data.map { |data_item| data_item['type'] }
-      { event_types: event_types }
+      data.map { |data_item| data_item['type'] }
+      { prs: {}, reviews: {}, comments: {} }
     end
 
     private

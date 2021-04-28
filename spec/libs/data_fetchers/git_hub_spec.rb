@@ -16,7 +16,34 @@ RSpec.describe DataFetchers::GitHub, :vcr do
     end
 
     it 'returns appropriate keys' do
-      expect(service_result.keys).to eq(%w[prs reviews comments])
+      expect(service_result.keys).to eq(%i[prs reviews comments])
+    end
+
+    it 'reveals prs' do
+      expect(service_result[:prs]).to be_a(Array)
+    end
+
+    it 'reveals reviews' do
+      expect(service_result[:reviews]).to be_a(Array)
+    end
+
+    it 'reveals comments' do
+      expect(service_result[:comments]).to be_a(Array)
+    end
+
+    it 'reveals pr details' do
+      expect(service_result[:prs].first).to eq({ author: 'petrokoriakin',
+                                                 created_at: Time.zone.parse('2021-04-27 20:13:54') })
+    end
+
+    it 'reveals reviews details' do
+      expect(service_result[:reviews].first).to eq({ author: 'petrokoriakin',
+                                                     created_at: Time.zone.parse('2021-04-27 20:13:54') })
+    end
+
+    it 'reveals comments details' do
+      expect(service_result[:comments].first).to eq({ author: 'petrokoriakin',
+                                                      created_at: Time.zone.parse('2021-04-27 20:13:54') })
     end
   end
 end
