@@ -9,10 +9,14 @@ RSpec.describe DataFetchers::GitHub, :vcr do
   end
 
   describe '#call' do
-    subject(:service) { described_class.new }
+    subject(:service_result) { VCR.use_cassette('sample_repo_events') { described_class.new.call } }
 
-    it 'returns a string' do
-      expect(service.call).to be_a(Hash)
+    it 'returns a hash' do
+      expect(service_result).to be_a(Hash)
+    end
+
+    it 'returns appropriate keys' do
+      expect(service_result.keys).to eq(%w[prs reviews comments])
     end
   end
 end
