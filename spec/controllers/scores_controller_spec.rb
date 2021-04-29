@@ -2,11 +2,11 @@
 
 require 'rails_helper'
 
-RSpec.describe ScoresController do
+RSpec.describe ScoresController, :vcr do
   describe '#index' do
     render_views
 
-    it 'responds with :success', :vcr do
+    it 'responds with :success' do
       get :index
 
       expect(response.status).to eq(200)

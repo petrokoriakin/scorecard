@@ -7,7 +7,7 @@ class ScoresController < ApplicationController
   end
 
   def show
-    details = { 'pr_quantity' => 4, 'pr_points' => 48, 'reviews_quantity' => 2, 'reviews_points' => 6,
+    details = { 'prs_quantity' => 4, 'prs_points' => 48, 'reviews_quantity' => 2, 'reviews_points' => 6,
                 'comments_quantity' => 5, 'comments_score' => 5 }
     render json: { 'id' => 14, 'name' => params[:user_name], 'score' => 77, 'repo_name' => params[:repo_name],
                    'score_details' => details }
