@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'scores_composer'
+
 module DataFetchers
   class GitHub
     GITHUB_EVENTS = [
@@ -9,9 +11,9 @@ module DataFetchers
     ].freeze
 
     GITHUB_MAPPING = {
-      PR_EVENT => 'pr',
-      COMMENT_EVENT => 'comment',
-      REVIEW_EVENT => 'review'
+      PR_EVENT => ScoresComposer::PR,
+      COMMENT_EVENT => ScoresComposer::COMMENT,
+      REVIEW_EVENT => ScoresComposer::REVIEW
     }.freeze
 
     def initialize(repo: 'petrokoriakin/scorecard-sample')
