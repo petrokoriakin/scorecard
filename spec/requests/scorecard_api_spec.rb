@@ -86,7 +86,7 @@ RSpec.describe 'Scorecard API', type: :request, vcr: true do
 
     it 'renders data' do
       data = JSON.parse(response.body)
-      expect(data.keys).to eq(%w[id name score repo_name score_details])
+      expect(data.keys).to eq(%w[id contributor_name score repo_name score_details])
     end
 
     it 'renders score details' do

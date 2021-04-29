@@ -12,4 +12,10 @@ class ScoresComposer
     REVIEW => 3,
     COMMENT => 1
   }.freeze
+
+  def initialize(data: {})
+    @data = data
+  end
+
+  def call(_author: nil); end
 end
