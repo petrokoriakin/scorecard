@@ -7,7 +7,7 @@ RSpec.describe ScoresController, :vcr do
     render_views
 
     it 'responds with :success' do
-      get :index
+      VCR.use_cassette('sample_repo_events') { get :index }
 
       expect(response.status).to eq(200)
     end

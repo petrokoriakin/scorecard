@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Scorecard API', type: :request, vcr: true do
   describe 'root endpoint' do
-    before { get '/', params: { repo_name: 'some_repo' } }
+    before { VCR.use_cassette('sample_repo_events') { get '/', params: { repo_name: 'some_repo' } } }
 
     it 'renders json' do
       expect(response.content_type).to eq('application/json; charset=utf-8')
@@ -16,8 +16,7 @@ RSpec.describe 'Scorecard API', type: :request, vcr: true do
 
     it 'renders data' do
       data = JSON.parse(response.body)
-      expect(data).to eq({ 'scores' => [{ 'id' => 13, 'name' => 'user1', 'score' => 99, 'repo_name' => 'some_repo' },
-                                        { 'id' => 14, 'name' => 'user2', 'score' => 77, 'repo_name' => 'some_repo' }] })
+      expect(data).to eq({ 'scores' => [{ 'contributor_name' => 'petrokoriakin', 'score' => 57 }] })
     end
   end
 
@@ -56,7 +55,7 @@ RSpec.describe 'Scorecard API', type: :request, vcr: true do
   end
 
   describe 'repo scores' do
-    before { get '/repos/some_repo/scores' }
+    before { VCR.use_cassette('sample_repo_events') { get '/repos/some_repo/scores' } }
 
     it 'renders json' do
       expect(response.content_type).to eq('application/json; charset=utf-8')
@@ -68,13 +67,12 @@ RSpec.describe 'Scorecard API', type: :request, vcr: true do
 
     it 'renders data' do
       data = JSON.parse(response.body)
-      expect(data).to eq({ 'scores' => [{ 'id' => 13, 'name' => 'user1', 'score' => 99, 'repo_name' => 'some_repo' },
-                                        { 'id' => 14, 'name' => 'user2', 'score' => 77, 'repo_name' => 'some_repo' }] })
+      expect(data).to eq({ 'scores' => [{ 'contributor_name' => 'petrokoriakin', 'score' => 57 }] })
     end
   end
 
   describe 'repo score for user' do
-    before { get '/repos/some_repo/scores/user1' }
+    before { VCR.use_cassette('sample_repo_events') { get '/repos/some_repo/scores/petrokoriakin' } }
 
     it 'renders json' do
       expect(response.content_type).to eq('application/json; charset=utf-8')
@@ -86,13 +84,13 @@ RSpec.describe 'Scorecard API', type: :request, vcr: true do
 
     it 'renders data' do
       data = JSON.parse(response.body)
-      expect(data.keys).to eq(%w[id contributor_name score repo_name score_details])
+      expect(data.keys).to eq(%w[contributor_name score score_details])
     end
 
     it 'renders score details' do
       data = JSON.parse(response.body)
       expect(data['score_details']).to eq({ 'prs_quantity' => 4, 'prs_points' => 48, 'reviews_quantity' => 2,
-                                            'reviews_points' => 6, 'comments_quantity' => 5, 'comments_score' => 5 })
+                                            'reviews_points' => 6, 'comments_quantity' => 3, 'comments_points' => 3 })
     end
   end
 end

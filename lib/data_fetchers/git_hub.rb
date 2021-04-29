@@ -42,8 +42,13 @@ module DataFetchers
 
     def process_events(data)
       data.each_with_object([]) do |item, result|
-        result << collect_details(item) if GITHUB_EVENTS.include?(item['type'])
+        result << collect_details(item) if reasonable?(item)
       end
+    end
+
+    def reasonable?(event)
+      [COMMENT_EVENT, REVIEW_EVENT].include?(event['type']) ||
+        (PR_EVENT == event['type'] && event['payload']['action'] == 'closed')
     end
 
     def collect_details(event)

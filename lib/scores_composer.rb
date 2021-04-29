@@ -27,7 +27,7 @@ class ScoresComposer
     scored_data = compose_score(author)
 
     scored_data.map do |(contributor, details)|
-      { contributor_name: contributor, score: details.values_at(score_keys).sum, score_details: details }
+      { contributor_name: contributor, score: details.values_at(*score_keys).sum, score_details: details }
     end
   end
 
