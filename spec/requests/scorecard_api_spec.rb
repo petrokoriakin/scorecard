@@ -20,42 +20,8 @@ RSpec.describe 'Scorecard API', type: :request, vcr: true do
     end
   end
 
-  describe 'repos index' do
-    before { get '/repos' }
-
-    it 'renders json' do
-      expect(response.content_type).to eq('application/json; charset=utf-8')
-    end
-
-    it 'renders success status' do
-      expect(response).to have_http_status(:success)
-    end
-
-    it 'renders data' do
-      data = JSON.parse(response.body)
-      expect(data).to eq({ 'repos' => [{ 'id' => 13, 'name' => 'some_repo' }, { 'id' => 26, 'name' => 'other_repo' }] })
-    end
-  end
-
-  describe 'repos member' do
-    before { get '/repos/some_repo' }
-
-    it 'renders json' do
-      expect(response.content_type).to eq('application/json; charset=utf-8')
-    end
-
-    it 'renders success status' do
-      expect(response).to have_http_status(:success)
-    end
-
-    it 'renders data' do
-      data = JSON.parse(response.body)
-      expect(data).to eq({ 'id' => 13, 'name' => 'some_repo' })
-    end
-  end
-
   describe 'repo scores' do
-    before { VCR.use_cassette('sample_repo_events') { get '/repos/some_repo/scores' } }
+    before { VCR.use_cassette('sample_repo_events') { get '/github/petrokoriakin/scorecard-sample/scores' } }
 
     it 'renders json' do
       expect(response.content_type).to eq('application/json; charset=utf-8')
@@ -72,7 +38,9 @@ RSpec.describe 'Scorecard API', type: :request, vcr: true do
   end
 
   describe 'repo score for user' do
-    before { VCR.use_cassette('sample_repo_events') { get '/repos/some_repo/scores/petrokoriakin' } }
+    before do
+      VCR.use_cassette('sample_repo_events') { get '/github/petrokoriakin/scorecard-sample/scores/petrokoriakin' }
+    end
 
     it 'renders json' do
       expect(response.content_type).to eq('application/json; charset=utf-8')
