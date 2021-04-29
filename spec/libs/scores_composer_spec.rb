@@ -26,25 +26,29 @@ RSpec.describe ScoresComposer do
   context 'when author is nil' do
     subject(:result_without_author) { described_class.new(data: sample_data).call }
 
+    it 'returns more than one item' do
+      expect(result_without_author.size).to eq(2)
+    end
+
     it 'returns scores for sample author' do
-      expect(result_without_author.first.keys).to eq(%w[contributor_name score score_details])
+      expect(result_without_author.first.keys).to eq(%i[contributor_name score score_details])
     end
 
     it 'returns score details sample author' do
       expect(result_without_author.first[:score_details]).to eq(
-        { prs_quantity: 4, prs_points: 48, reviews_quantity: 2, reviews_points: 6, comments_quantity: 5,
-          comments_score: 5 }
+        { prs_quantity: 1, prs_points: 12, reviews_quantity: 1, reviews_points: 3, comments_quantity: 1,
+          comments_points: 1 }
       )
     end
 
     it 'returns scores for another author' do
-      expect(result_without_author.last.keys).to eq(%w[contributor_name score score_details])
+      expect(result_without_author.last.keys).to eq(%i[contributor_name score score_details])
     end
 
     it 'returns score details another author' do
       expect(result_without_author.last[:score_details]).to eq(
-        { prs_quantity: 4, prs_points: 48, reviews_quantity: 2, reviews_points: 6, comments_quantity: 5,
-          comments_score: 5 }
+        { prs_quantity: 1, prs_points: 12, reviews_quantity: 1, reviews_points: 3, comments_quantity: 1,
+          comments_points: 1 }
       )
     end
   end
@@ -52,14 +56,18 @@ RSpec.describe ScoresComposer do
   context 'when author is given' do
     subject(:result_without_author) { described_class.new(data: sample_data).call(author: sample_author) }
 
+    it 'returns only one item' do
+      expect(result_without_author.size).to eq(1)
+    end
+
     it 'returns scores for sample author' do
-      expect(result_without_author.first.keys).to eq(%w[contributor_name score score_details])
+      expect(result_without_author.first.keys).to eq(%i[contributor_name score score_details])
     end
 
     it 'returns score details sample author' do
       expect(result_without_author.first[:score_details]).to eq(
-        { prs_quantity: 4, prs_points: 48, reviews_quantity: 2, reviews_points: 6, comments_quantity: 5,
-          comments_score: 5 }
+        { prs_quantity: 1, prs_points: 12, reviews_quantity: 1, reviews_points: 3, comments_quantity: 1,
+          comments_points: 1 }
       )
     end
   end
