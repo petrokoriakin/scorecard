@@ -34,6 +34,10 @@ RSpec.describe ScoresComposer do
       expect(result_without_author.first.keys).to eq(%i[contributor_name score score_details])
     end
 
+    it 'returns score for sample author' do
+      expect(result_without_author.first[:score]).to eq(16)
+    end
+
     it 'returns score details sample author' do
       expect(result_without_author.first[:score_details]).to eq(
         { prs_quantity: 1, prs_points: 12, reviews_quantity: 1, reviews_points: 3, comments_quantity: 1,
@@ -45,6 +49,10 @@ RSpec.describe ScoresComposer do
       expect(result_without_author.last.keys).to eq(%i[contributor_name score score_details])
     end
 
+    it 'returns score for another author' do
+      expect(result_without_author.last[:score]).to eq(16)
+    end
+
     it 'returns score details another author' do
       expect(result_without_author.last[:score_details]).to eq(
         { prs_quantity: 1, prs_points: 12, reviews_quantity: 1, reviews_points: 3, comments_quantity: 1,
@@ -54,18 +62,22 @@ RSpec.describe ScoresComposer do
   end
 
   context 'when author is given' do
-    subject(:result_without_author) { described_class.new(data: sample_data).call(author: sample_author) }
+    subject(:result_with_author) { described_class.new(data: sample_data).call(author: sample_author) }
 
     it 'returns only one item' do
-      expect(result_without_author.size).to eq(1)
+      expect(result_with_author.size).to eq(1)
+    end
+
+    it 'returns score for sample author' do
+      expect(result_with_author.first[:score]).to eq(16)
     end
 
     it 'returns scores for sample author' do
-      expect(result_without_author.first.keys).to eq(%i[contributor_name score score_details])
+      expect(result_with_author.first.keys).to eq(%i[contributor_name score score_details])
     end
 
     it 'returns score details sample author' do
-      expect(result_without_author.first[:score_details]).to eq(
+      expect(result_with_author.first[:score_details]).to eq(
         { prs_quantity: 1, prs_points: 12, reviews_quantity: 1, reviews_points: 3, comments_quantity: 1,
           comments_points: 1 }
       )

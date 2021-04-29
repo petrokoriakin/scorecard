@@ -16,8 +16,8 @@ module DataFetchers
       REVIEW_EVENT => ScoresComposer::REVIEW
     }.freeze
 
-    def initialize(repo: 'petrokoriakin/scorecard-sample')
-      @url = "https://api.github.com/repos/#{repo}/events"
+    def initialize(org: 'petrokoriakin', repo: 'scorecard-sample')
+      @uri = "https://api.github.com/repos/#{org}/#{repo}/events"
     end
 
     def call
@@ -28,13 +28,10 @@ module DataFetchers
     private
 
     def obtain_raw_data
-      uri = URI.parse('https://api.github.com/repos/petrokoriakin/scorecard-sample/events')
-      request = Net::HTTP::Get.new(uri)
-      request['Accept'] = 'application/vnd.github.v3+json'
-      req_options = {
-        use_ssl: uri.scheme == 'https'
-      }
-      response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
+      uri = URI.parse(@uri)
+      response = Net::HTTP.start(uri.hostname, uri.port, { use_ssl: true }) do |http|
+        request = Net::HTTP::Get.new(uri)
+        request['Accept'] = 'application/vnd.github.v3+json'
         http.request(request)
       end
       response.body
@@ -42,8 +39,13 @@ module DataFetchers
 
     def process_events(data)
       data.each_with_object([]) do |item, result|
-        result << collect_details(item) if GITHUB_EVENTS.include?(item['type'])
+        result << collect_details(item) if reasonable?(item)
       end
+    end
+
+    def reasonable?(event)
+      [COMMENT_EVENT, REVIEW_EVENT].include?(event['type']) ||
+        (PR_EVENT == event['type'] && event['payload']['action'] == 'closed')
     end
 
     def collect_details(event)

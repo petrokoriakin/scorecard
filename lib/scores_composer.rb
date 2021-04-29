@@ -27,7 +27,7 @@ class ScoresComposer
     scored_data = compose_score(author)
 
     scored_data.map do |(contributor, details)|
-      { contributor_name: contributor, score: details.values_at(score_keys).sum, score_details: details }
+      { contributor_name: contributor, score: details.values_at(*score_keys).sum, score_details: details }
     end
   end
 
@@ -42,12 +42,6 @@ class ScoresComposer
     end
   end
 
-  def filtered_data_for(author = nil)
-    return @data[:events] if author.nil?
-
-    @data[:events].select { |event| event[:author] == author }
-  end
-
   def quantity_key_for(event_type)
     EVENT_KEYS[event_type][:quantity]
   end
@@ -58,5 +52,11 @@ class ScoresComposer
 
   def score_keys
     EVENT_KEYS.values.pluck(:score)
+  end
+
+  def filtered_data_for(author = nil)
+    return @data[:events] if author.nil?
+
+    @data[:events].select { |event| event[:author] == author }
   end
 end
