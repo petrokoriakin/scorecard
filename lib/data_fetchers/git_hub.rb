@@ -2,14 +2,25 @@
 
 module DataFetchers
   class GitHub
+    GITHUB_EVENTS = [
+      PR_EVENT = 'PullRequestEvent',
+      COMMENT_EVENT = 'IssueCommentEvent',
+      REVIEW_EVENT =  'PullRequestReviewEvent'
+    ].freeze
+
+    GITHUB_MAPPING = {
+      PR_EVENT => 'pr',
+      COMMENT_EVENT => 'comment',
+      REVIEW_EVENT => 'review'
+    }.freeze
+
     def initialize(repo: 'petrokoriakin/scorecard-sample')
       @url = "https://api.github.com/repos/#{repo}/events"
     end
 
     def call
       data = JSON.parse(obtain_raw_data)
-      { prs: collect_prs_details(data), reviews: collect_reviews_details(data),
-        comments: collect_comments_details(data) }
+      { events: process_events(data) }
     end
 
     private
@@ -27,16 +38,16 @@ module DataFetchers
       response.body
     end
 
-    def collect_prs_details(_data)
-      [{ author: 'petrokoriakin', created_at: Time.zone.parse('2021-04-27 20:13:54') }]
+    def process_events(data)
+      data.each_with_object([]) do |item, result|
+        result << collect_details(item) if GITHUB_EVENTS.include?(item['type'])
+      end
     end
 
-    def collect_reviews_details(_data)
-      [{ author: 'petrokoriakin', created_at: Time.zone.parse('2021-04-27 20:13:54') }]
-    end
-
-    def collect_comments_details(_data)
-      [{ author: 'petrokoriakin', created_at: Time.zone.parse('2021-04-27 20:13:54') }]
+    def collect_details(event)
+      { author: event['actor']['display_login'],
+        type: GITHUB_MAPPING[event['type']],
+        created_at: Time.zone.parse(event['created_at']) }
     end
   end
 end
